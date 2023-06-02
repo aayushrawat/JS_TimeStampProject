@@ -38,7 +38,7 @@ app.get("/api", (req, res) => {
 app.get('/api/:giventime', (req, res) => {
 const { giventime } = req.params;
 const isUnix = /^\d+$/.test(giventime);
-const isDate = /^\d{4}-\d{2}-\d{2}$/.test(giventime);
+const isDate = Date.parse(giventime);
 // const isnotnull = !isNaN(parseInt(giventime));
 
 if (isUnix)  {
