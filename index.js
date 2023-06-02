@@ -25,8 +25,46 @@ app.get("/api/hello", function (req, res) {
 });
 
 
+app.get('/api/:giventime', (req, res) => {
+const { giventime } = req.params;
+const isUnix = /^\d+$/.test(giventime);
+const isDate = /^\d{4}-\d{2}-\d{2}$/.test(giventime);
+console.log(isUnix);
+console.log(isDate);
+
+if (isUnix) {
+  // Convert the Unix timestamp to UTC
+  const utcTime = new Date(parseInt(giventime)).toUTCString();
+  // Create the JSON response object
+  const response = {
+    unix: parseInt(giventime),
+    utc: utcTime
+  };
+  // Send the JSON response
+  // res.send(isUnix);
+  res.json(response);
+  
+} else if (isDate) {
+
+  const unixtime = Date.parse(giventime);
+  const utcTime = new Date(parseInt(unixtime)).toUTCString();
+  const response = {
+    unix: unixtime,
+    utc: utcTime
+  };
+  res.json(response);
+
+} else {
+  res.status(400).json({ error: 'Invalid input' });
+}
+});
+
+
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+// const port = process.env.PORT;
+const port = 3000;
+var listener = app.listen(port, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
