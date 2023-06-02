@@ -24,15 +24,24 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+//  API Route if /api/:time is null
+app.get("/api", (req, res) => {
+  const unixnow = Date.now()
+  const response = {
+    unix: unixnow,
+    utc: new Date(parseInt(unixnow)).toUTCString()
+  };
+  res.json(response);
+});
 
+// Normal API Route
 app.get('/api/:giventime', (req, res) => {
 const { giventime } = req.params;
 const isUnix = /^\d+$/.test(giventime);
 const isDate = /^\d{4}-\d{2}-\d{2}$/.test(giventime);
-console.log(isUnix);
-console.log(isDate);
+// const isnotnull = !isNaN(parseInt(giventime));
 
-if (isUnix) {
+if (isUnix)  {
   // Convert the Unix timestamp to UTC
   const utcTime = new Date(parseInt(giventime)).toUTCString();
   // Create the JSON response object
@@ -56,8 +65,10 @@ if (isUnix) {
 
 } else {
   res.status(400).json({ error: 'Invalid input' });
-}
+};
+
 });
+
 
 
 
@@ -67,4 +78,3 @@ const port = 3000;
 var listener = app.listen(port, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
-
