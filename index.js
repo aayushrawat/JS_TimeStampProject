@@ -64,7 +64,7 @@ if (isUnix)  {
   res.json(response);
 
 } else {
-  res.status(400).json({ error: 'Invalid input' });
+  res.json({ error: "Invalid Date" });
 };
 
 });
